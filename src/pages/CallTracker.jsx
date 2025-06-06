@@ -253,7 +253,7 @@ const columnOptions = [
   { key: "enquiryStatus", label: "Enquiry Status" },
   { key: "customerFeedback", label: "What Did Customer Say" },
   { key: "currentStage", label: "Current Stage" },
-  { key: "sendQuotationNo", label: "Send Quotation No." },
+  // { key: "sendQuotationNo", label: "Send Quotation No." },
   // { key: "quotationSharedBy", label: "Quotation Shared By" },
   // { key: "quotationNumber", label: "Quotation Number" },
   // { key: "valueWithoutTax", label: "Value Without Tax" },
@@ -919,7 +919,7 @@ const filterCounts = calculateFilterCounts();
             {showCurrentStageDropdown && (
               <div className="absolute top-full left-0 mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10 min-w-full">
                 <div className="p-2">
-                  <label className="flex items-center p-2 hover:bg-gray-50 cursor-pointer">
+                  {/* <label className="flex items-center p-2 hover:bg-gray-50 cursor-pointer">
                     <input
                       type="checkbox"
                       className="mr-2"
@@ -936,7 +936,7 @@ const filterCounts = calculateFilterCounts();
                       onChange={() => handleCurrentStageChange("quotation-validation")}
                     />
                     <span>Quotation Validation</span>
-                  </label>
+                  </label> */}
                   <label className="flex items-center p-2 hover:bg-gray-50 cursor-pointer">
                     <input
                       type="checkbox"
