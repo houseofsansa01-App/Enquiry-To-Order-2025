@@ -9,7 +9,7 @@ function Dashboard() {
       <div className="container mx-auto py-8 px-4">
         <div className="mb-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-            Leads To Order System
+            Enquiry To Order System
           </h1>
           <p className="text-slate-600 mt-2">Monitor your sales pipeline and track conversions in real-time</p>
         </div>

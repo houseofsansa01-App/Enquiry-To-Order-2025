@@ -23,7 +23,7 @@ const [creditLimitOptions, setCreditLimitOptions] = useState([])
         setIsLoadingDropdowns(true)
         
         // Fetch data from DROPDOWN sheet
-        const dropdownUrl = "https://docs.google.com/spreadsheets/d/1TZVWkmASF7tG-QER17588sl4SvRgY7knFKFDtYFjB0Q/gviz/tq?tqx=out:json&sheet=DROPDOWN"
+        const dropdownUrl = "https://docs.google.com/spreadsheets/d/18y2Pcg_GW0pxw-oJ-nA3MJtj6NJ2ESGqbn5DErLpFpQ/gviz/tq?tqx=out:json&sheet=DROPDOWN"
         const response = await fetch(dropdownUrl)
         const text = await response.text()
         
@@ -138,57 +138,57 @@ setCreditLimitOptions(["10000", "25000", "50000", "100000"])
   }, [])
 
   // Fetch quotation numbers for the given enquiry number
-  useEffect(() => {
-    const fetchQuotationNumbers = async () => {
-      if (!enquiryNo) return
+  // useEffect(() => {
+  //   const fetchQuotationNumbers = async () => {
+  //     if (!enquiryNo) return
       
-      try {
-        setIsLoadingQuotations(true)
+  //     try {
+  //       setIsLoadingQuotations(true)
         
-        // Fetch data from FMS sheet
-        const fmsUrl = "https://docs.google.com/spreadsheets/d/1TZVWkmASF7tG-QER17588sl4SvRgY7knFKFDtYFjB0Q/gviz/tq?tqx=out:json&sheet=FMS"
-        const response = await fetch(fmsUrl)
-        const text = await response.text()
+  //       // Fetch data from FMS sheet
+  //       const fmsUrl = "https://docs.google.com/spreadsheets/d/1TZVWkmASF7tG-QER17588sl4SvRgY7knFKFDtYFjB0Q/gviz/tq?tqx=out:json&sheet=FMS"
+  //       const response = await fetch(fmsUrl)
+  //       const text = await response.text()
         
-        // Extract the JSON part from the response
-        const jsonStart = text.indexOf('{')
-        const jsonEnd = text.lastIndexOf('}') + 1
-        const jsonData = text.substring(jsonStart, jsonEnd)
+  //       // Extract the JSON part from the response
+  //       const jsonStart = text.indexOf('{')
+  //       const jsonEnd = text.lastIndexOf('}') + 1
+  //       const jsonData = text.substring(jsonStart, jsonEnd)
         
-        const data = JSON.parse(jsonData)
+  //       const data = JSON.parse(jsonData)
         
-        // Find matching quotation numbers where column B matches the enquiry number
-        if (data && data.table && data.table.rows) {
-          const matchingQuotations = []
+  //       // Find matching quotation numbers where column B matches the enquiry number
+  //       if (data && data.table && data.table.rows) {
+  //         const matchingQuotations = []
           
-          data.table.rows.forEach(row => {
-            // Column B is index 1 (enquiry number) and column H is index 7 (quotation number)
-            if (row.c && 
-                row.c[1] && 
-                row.c[1].v && 
-                row.c[1].v.toString() === enquiryNo.toString() &&
-                row.c[60] && 
-                row.c[60].v) {
-              matchingQuotations.push(row.c[60].v)
-            }
-          })
+  //         data.table.rows.forEach(row => {
+  //           // Column B is index 1 (enquiry number) and column H is index 7 (quotation number)
+  //           if (row.c && 
+  //               row.c[1] && 
+  //               row.c[1].v && 
+  //               row.c[1].v.toString() === enquiryNo.toString() &&
+  //               row.c[60] && 
+  //               row.c[60].v) {
+  //             matchingQuotations.push(row.c[60].v)
+  //           }
+  //         })
           
-          setQuotationNumbers(matchingQuotations)
+  //         setQuotationNumbers(matchingQuotations)
           
-          // If we found matches and the form field is empty, auto-fill with the first match
-          if (matchingQuotations.length > 0 && !formData.orderStatusQuotationNumber) {
-            onFieldChange('orderStatusQuotationNumber', matchingQuotations[0])
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching quotation numbers:", error)
-      } finally {
-        setIsLoadingQuotations(false)
-      }
-    }
+  //         // If we found matches and the form field is empty, auto-fill with the first match
+  //         if (matchingQuotations.length > 0 && !formData.orderStatusQuotationNumber) {
+  //           onFieldChange('orderStatusQuotationNumber', matchingQuotations[0])
+  //         }
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching quotation numbers:", error)
+  //     } finally {
+  //       setIsLoadingQuotations(false)
+  //     }
+  //   }
     
-    fetchQuotationNumbers()
-  }, [enquiryNo, formData.orderStatusQuotationNumber, onFieldChange])
+  //   fetchQuotationNumbers()
+  // }, [enquiryNo, formData.orderStatusQuotationNumber, onFieldChange])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -220,7 +220,7 @@ setCreditLimitOptions(["10000", "25000", "50000", "100000"])
       <h3 className="text-lg font-medium">Order Status</h3>
       <hr className="border-gray-200" />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <label htmlFor="orderStatusQuotationNumber" className="block text-sm font-medium text-gray-700">
             Quotation Number
@@ -261,7 +261,7 @@ setCreditLimitOptions(["10000", "25000", "50000", "100000"])
             <div className="text-xs text-orange-500 mt-1">No matching quotations found for enquiry #{enquiryNo}</div>
           )}
         </div>
-      </div>
+      </div> */}
 
       <div className="space-y-2">
         <label className="block text-sm font-medium text-gray-700">Is Order Received? Status</label>
@@ -378,8 +378,8 @@ setCreditLimitOptions(["10000", "25000", "50000", "100000"])
     Transport Mode
   </label>
   <select
-    id="transportMode"
-    name="transportMode"
+  id="transportMode"
+  name="transportMode"
     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
     value={formData.transportMode || ""}
     onChange={handleChange}
@@ -427,7 +427,7 @@ setCreditLimitOptions(["10000", "25000", "50000", "100000"])
   </select>
 </div>
 
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <label htmlFor="conveyedForRegistration" className="block text-sm font-medium text-gray-700">
                 CONVEYED FOR REGISTRATION FORM
               </label>
@@ -443,12 +443,12 @@ setCreditLimitOptions(["10000", "25000", "50000", "100000"])
                   <option key={index} value={option.toLowerCase()}>{option}</option>
                 ))}
               </select>
-            </div>
+            </div> */}
           </div>
 
           <div className="space-y-2">
   <label htmlFor="orderVideo" className="block text-sm font-medium text-gray-700">
-    Offer No.
+    Order Video
   </label>
   <select
     id="orderVideo"
@@ -494,7 +494,7 @@ setCreditLimitOptions(["10000", "25000", "50000", "100000"])
       {orderStatus === "no" && (
         <div className="space-y-4 border p-4 rounded-md">
           <h4 className="font-medium">Order Lost Details</h4>
-
+{/* 
           <div className="space-y-2">
             <label htmlFor="apologyVideo" className="block text-sm font-medium text-gray-700">
               Order Lost Apology Video
@@ -506,7 +506,7 @@ setCreditLimitOptions(["10000", "25000", "50000", "100000"])
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
               onChange={handleFileChange}
             />
-          </div>
+          </div> */}
 
           <div className="space-y-2">
             <label htmlFor="reasonStatus" className="block text-sm font-medium text-gray-700">

@@ -26,28 +26,28 @@ function MainNav({ logout }) {
     },
     {
       href: "/leads",
-      label: "Leads",
+      label: "Enquiry",
       icon: <UsersIcon className="h-5 w-5 mr-2" />,
       active: location.pathname.startsWith("/leads"),
     },
-    {
-      href: "/follow-up",
-      label: "Follow-Up",
-      icon: <PhoneCallIcon className="h-5 w-5 mr-2" />,
-      active: location.pathname.startsWith("/follow-up"),
-    },
+    // {
+    //   href: "/follow-up",
+    //   label: "Follow-Up",
+    //   icon: <PhoneCallIcon className="h-5 w-5 mr-2" />,
+    //   active: location.pathname.startsWith("/follow-up"),
+    // },
     {
       href: "/call-tracker",
       label: "Call Tracker",
       icon: <BarChartIcon className="h-5 w-5 mr-2" />,
       active: location.pathname.startsWith("/call-tracker"),
     },
-    {
-      href: "/quotation",
-      label: "Quotation",
-      icon: <FileTextIcon className="h-5 w-5 mr-2" />,
-      active: location.pathname.startsWith("/quotation"),
-    },
+    // {
+    //   href: "/quotation",
+    //   label: "Quotation",
+    //   icon: <FileTextIcon className="h-5 w-5 mr-2" />,
+    //   active: location.pathname.startsWith("/quotation"),
+    // },
   ]
   
   // Add admin-only route if user is admin
@@ -66,7 +66,7 @@ function MainNav({ logout }) {
         <div className="mr-8 flex items-center">
           <Link to="/" className="flex items-center">
             <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-              Leads To Order System
+              Enquiry To Order System
             </span>
           </Link>
         </div>

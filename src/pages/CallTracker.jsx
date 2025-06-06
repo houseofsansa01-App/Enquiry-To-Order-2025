@@ -15,7 +15,8 @@ const fadeOut = "animate-out fade-out duration-300"
 function CallTracker() {
   const { currentUser, userType, isAdmin } = useContext(AuthContext) // Get user info and admin function
   const [searchTerm, setSearchTerm] = useState("")
-  const [activeTab, setActiveTab] = useState("pending")
+  // const [activeTab, setActiveTab] = useState("pending")
+  const [activeTab, setActiveTab] = useState("directEnquiry") // Changed from "pending" to "directEnquiry"
   const [pendingCallTrackers, setPendingCallTrackers] = useState([])
   const [historyCallTrackers, setHistoryCallTrackers] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -39,21 +40,21 @@ function CallTracker() {
     enquiryStatus: true,
     customerFeedback: true,
     currentStage: true,
-    sendQuotationNo: true,
-    quotationSharedBy: true,
-    quotationNumber: true,
-    valueWithoutTax: true,
-    valueWithTax: true,
-    quotationUpload: true,
-    quotationRemarks: true,
-    validatorName: true,
-    sendStatus: true,
-    validationRemark: true,
-    faqVideo: true,
-    productVideo: true,
-    offerVideo: true,
-    productCatalog: true,
-    productImage: true,
+    // sendQuotationNo: true,
+    // quotationSharedBy: true,
+    // quotationNumber: true,
+    // valueWithoutTax: true,
+    // valueWithTax: true,
+    // quotationUpload: true,
+    // quotationRemarks: true,
+    // validatorName: true,
+    // sendStatus: true,
+    // validationRemark: true,
+    // faqVideo: true,
+    // productVideo: true,
+    // offerVideo: true,
+    // productCatalog: true,
+    // productImage: true,
     nextCallDate: true,
     nextCallTime: true,
     orderStatus: true,
@@ -61,7 +62,7 @@ function CallTracker() {
     paymentMode: true,
     paymentTerms: true,
     transportMode: true,
-    registrationFrom: true,
+    // registrationFrom: true,
     orderVideo: true,
     acceptanceFile: true,
     orderRemark: true,
@@ -71,6 +72,9 @@ function CallTracker() {
     holdReason: true,
     holdingDate: true,
     holdRemark: true,
+    followupStatus: true,
+    creditDays: true,
+    creditLimit: true,
   })
   const [showColumnDropdown, setShowColumnDropdown] = useState(false)
 
@@ -196,6 +200,7 @@ function CallTracker() {
   }
 
 // Replace the matchesCallingDaysFilter function with this updated version
+// Replace the matchesCallingDaysFilter function with this updated version
 const matchesCallingDaysFilter = (dateStr, activeTab) => {
   if (callingDaysFilter.length === 0) return true;
   
@@ -207,9 +212,9 @@ const matchesCallingDaysFilter = (dateStr, activeTab) => {
       // Special handling for history tab
       switch (filter) {
         case "today":
-          return isToday(dateStr); // Use the isToday helper function
+          return dateText.includes("todaycall"); // Match "TodayCall" in sheet
         case "older":
-          return !isToday(dateStr); // Older days call
+          return dateText.includes("older  days call"); // Match "Older Days Call" in sheet
         default:
           return false;
       }
@@ -249,20 +254,20 @@ const columnOptions = [
   { key: "customerFeedback", label: "What Did Customer Say" },
   { key: "currentStage", label: "Current Stage" },
   { key: "sendQuotationNo", label: "Send Quotation No." },
-  { key: "quotationSharedBy", label: "Quotation Shared By" },
-  { key: "quotationNumber", label: "Quotation Number" },
-  { key: "valueWithoutTax", label: "Value Without Tax" },
-  { key: "valueWithTax", label: "Value With Tax" },
-  { key: "quotationUpload", label: "Quotation Upload" },
-  { key: "quotationRemarks", label: "Quotation Remarks" },
-  { key: "validatorName", label: "Validator Name" },
-  { key: "sendStatus", label: "Send Status" },
-  { key: "validationRemark", label: "Validation Remark" },
-  { key: "faqVideo", label: "FAQ Video" },
-  { key: "productVideo", label: "Product Video" },
-  { key: "offerVideo", label: "Offer Video" },
-  { key: "productCatalog", label: "Product Catalog" },
-  { key: "productImage", label: "Product Image" },
+  // { key: "quotationSharedBy", label: "Quotation Shared By" },
+  // { key: "quotationNumber", label: "Quotation Number" },
+  // { key: "valueWithoutTax", label: "Value Without Tax" },
+  // { key: "valueWithTax", label: "Value With Tax" },
+  // { key: "quotationUpload", label: "Quotation Upload" },
+  // { key: "quotationRemarks", label: "Quotation Remarks" },
+  // { key: "validatorName", label: "Validator Name" },
+  // { key: "sendStatus", label: "Send Status" },
+  // { key: "validationRemark", label: "Validation Remark" },
+  // { key: "faqVideo", label: "FAQ Video" },
+  // { key: "productVideo", label: "Product Video" },
+  // { key: "offerVideo", label: "Offer Video" },
+  // { key: "productCatalog", label: "Product Catalog" },
+  // { key: "productImage", label: "Product Image" },
   { key: "nextCallDate", label: "Next Call Date" },
   { key: "nextCallTime", label: "Next Call Time" },
   { key: "orderStatus", label: "Order Status" },
@@ -270,7 +275,7 @@ const columnOptions = [
   { key: "paymentMode", label: "Payment Mode" },
   { key: "paymentTerms", label: "Payment Terms" },
   { key: "transportMode", label: "Transport Mode" },
-  { key: "registrationFrom", label: "Registration From" },
+  // { key: "registrationFrom", label: "Registration From" },
   { key: "orderVideo", label: "Order Video" },
   { key: "acceptanceFile", label: "Acceptance File" },
   { key: "orderRemark", label: "Remark" },
@@ -280,6 +285,9 @@ const columnOptions = [
   { key: "holdReason", label: "Hold Reason" },
   { key: "holdingDate", label: "Holding Date" },
   { key: "holdRemark", label: "Hold Remark" },
+  { key: "followupStatus", label: "Followup Status" },
+  { key: "creditDays", label: "Credit Days" },
+  { key: "creditLimit", label: "Credit Limit" },
 ]
 
   // Close dropdowns when clicking outside
@@ -307,7 +315,7 @@ const columnOptions = [
 
         // Fetch data from FMS sheet for Pending Call Trackers
         const pendingUrl =
-          "https://docs.google.com/spreadsheets/d/1TZVWkmASF7tG-QER17588sl4SvRgY7knFKFDtYFjB0Q/gviz/tq?tqx=out:json&sheet=FMS"
+          "https://docs.google.com/spreadsheets/d/18y2Pcg_GW0pxw-oJ-nA3MJtj6NJ2ESGqbn5DErLpFpQ/gviz/tq?tqx=out:json&sheet=FMS"
         const pendingResponse = await fetch(pendingUrl)
         const pendingText = await pendingResponse.text()
 
@@ -320,7 +328,7 @@ const columnOptions = [
 
         // Fetch data from Enquiry Tracker sheet for History
         const historyUrl =
-          "https://docs.google.com/spreadsheets/d/1TZVWkmASF7tG-QER17588sl4SvRgY7knFKFDtYFjB0Q/gviz/tq?tqx=out:json&sheet=Enquiry Tracker"
+          "https://docs.google.com/spreadsheets/d/18y2Pcg_GW0pxw-oJ-nA3MJtj6NJ2ESGqbn5DErLpFpQ/gviz/tq?tqx=out:json&sheet=Enquiry Tracker"
         const historyResponse = await fetch(historyUrl)
         const historyText = await historyResponse.text()
 
@@ -333,7 +341,7 @@ const columnOptions = [
 
         // Fetch data from ENQUIRY TO ORDER sheet for Direct Enquiry Pending
         const directEnquiryUrl =
-          "https://docs.google.com/spreadsheets/d/1TZVWkmASF7tG-QER17588sl4SvRgY7knFKFDtYFjB0Q/gviz/tq?tqx=out:json&sheet=ENQUIRY TO ORDER"
+          "https://docs.google.com/spreadsheets/d/18y2Pcg_GW0pxw-oJ-nA3MJtj6NJ2ESGqbn5DErLpFpQ/gviz/tq?tqx=out:json&sheet=ENQUIRY TO ORDER"
         const directEnquiryResponse = await fetch(directEnquiryUrl)
         const directEnquiryText = await directEnquiryResponse.text()
 
@@ -352,7 +360,7 @@ const columnOptions = [
           // Skip the header row (index 0)
           pendingData.table.rows.slice(2).forEach((row, index) => {
             // Only show rows where column AJ (index 35) is not null and column AK (index 36) is null
-            if (row.c && row.c[52] && row.c[52].v && (!row.c[53] || !row.c[53].v)) {
+            if (row.c && row.c[33] && row.c[33].v && (!row.c[34] || !row.c[34].v)) {
               // Get the assigned user from column CC (index 88) like in the FollowUp component
               const assignedUser = row.c[88] ? row.c[88].v : ""
 
@@ -398,7 +406,7 @@ if (historyData && historyData.table && historyData.table.rows) {
   historyData.table.rows.slice(0).forEach((row, index) => {
     if (row.c) {
       // Get the assigned user from column AL (index 37)
-      const assignedUser = row.c[37] ? row.c[37].v : ""
+      const assignedUser = row.c[20] ? row.c[20].v : ""
       
       // For admin users, include all rows; for regular users, filter by their username
       const shouldInclude = isAdmin() || (currentUser && assignedUser === currentUser.username)
@@ -411,41 +419,44 @@ if (historyData && historyData.table && historyData.table.rows) {
           enquiryStatus: row.c[2] ? row.c[2].v : "", // Column C - Enquiry Status
           customerFeedback: row.c[3] ? row.c[3].v : "", // Column D - What Did Customer Say
           currentStage: row.c[4] ? row.c[4].v : "", // Column E - Current Stage
-          sendQuotationNo: row.c[5] ? row.c[5].v : "", // Column F - Send Quotation No
-          quotationSharedBy: row.c[6] ? row.c[6].v : "", // Column G - Quotation Shared By
-          quotationNumber: row.c[7] ? row.c[7].v : "", // Column H - Quotation Number
-          valueWithoutTax: row.c[8] ? row.c[8].v : "", // Column I - Value Without Tax
-          valueWithTax: row.c[9] ? row.c[9].v : "", // Column J - Value With Tax
-          quotationUpload: row.c[10] ? row.c[10].v : "", // Column K - Quotation Upload
-          quotationRemarks: row.c[11] ? row.c[11].v : "", // Column L - Quotation Remarks
+          // sendQuotationNo: row.c[5] ? row.c[5].v : "", // Column F - Send Quotation No
+          // quotationSharedBy: row.c[6] ? row.c[6].v : "", // Column G - Quotation Shared By
+          // quotationNumber: row.c[7] ? row.c[7].v : "", // Column H - Quotation Number
+          // valueWithoutTax: row.c[8] ? row.c[8].v : "", // Column I - Value Without Tax
+          // valueWithTax: row.c[9] ? row.c[9].v : "", // Column J - Value With Tax
+          // quotationUpload: row.c[10] ? row.c[10].v : "", // Column K - Quotation Upload
+          // quotationRemarks: row.c[11] ? row.c[11].v : "", // Column L - Quotation Remarks
           // validatorName: row.c[12] ? row.c[12].v : "", // Column M - Validator Name
           // sendStatus: row.c[13] ? row.c[13].v : "", // Column N - Send Status
           // validationRemark: row.c[14] ? row.c[14].v : "", // Column O - Validation Remark
           // faqVideo: row.c[15] ? row.c[15].v : "", // Column P - FAQ Video
-          // productVideo: row.c[16] ? row.c[16].v : "", // Column Q - Product Video
+          // productVideo: row.c[5] ? row.c[5].v : "", // Column Q - Product Video
           // offerVideo: row.c[17] ? row.c[17].v : "", // Column R - Offer Video
-          // productCatalog: row.c[18] ? row.c[18].v : "", // Column S - Product Catalog
-          // productImage: row.c[19] ? row.c[19].v : "", // Column T - Product Image
-          nextCallDate: formatDateToDDMMYYYY(row.c[20] ? row.c[20].v : ""), // Column U - Next Call Date
-          nextCallTime: formatTimeTo12Hour(row.c[21] ? row.c[21].v : ""), // Column V - Next Call Time
-          orderStatus: row.c[22] ? row.c[22].v : "", // Column W - Is Order Received? Status
-          acceptanceVia: row.c[23] ? row.c[23].v : "", // Column X - Acceptance Via
-          paymentMode: row.c[24] ? row.c[24].v : "", // Column Y - Payment Mode
-          paymentTerms: row.c[25] ? row.c[25].v : "", // Column Z - Payment Terms
-          transportMode: row.c[26] ? row.c[26].v : "", // Column AA - Transport Mode
-          registrationFrom: row.c[27] ? row.c[27].v : "", // Column AB - Registration From
-          orderVideo: row.c[28] ? row.c[28].v : "", // Column AC - Order Video
-          acceptanceFile: row.c[29] ? row.c[29].v : "", // Column AD - Acceptance File
-          orderRemark: row.c[30] ? row.c[30].v : "", // Column AE - Remark
-          apologyVideo: row.c[31] ? row.c[31].v : "", // Column AF - Apology Video
-          reasonStatus: row.c[32] ? row.c[32].v : "", // Column AG - Reason Status
-          reasonRemark: row.c[33] ? row.c[33].v : "", // Column AH - Reason Remark
-          holdReason: row.c[34] ? row.c[34].v : "", // Column AI - Hold Reason
-          holdingDate: formatDateToDDMMYYYY(row.c[35] ? row.c[35].v : ""), // Column AJ - Holding Date
-          holdRemark: row.c[36] ? row.c[36].v : "", // Column AK - Hold Remark
+          // productCatalog: row.c[6] ? row.c[6].v : "", // Column S - Product Catalog
+          // productImage: row.c[7] ? row.c[7].v : "", // Column T - Product Image
+          nextCallDate: formatDateToDDMMYYYY(row.c[5] ? row.c[5].v : ""), // Column U - Next Call Date
+          nextCallTime: formatTimeTo12Hour(row.c[6] ? row.c[6].v : ""), // Column V - Next Call Time
+          orderStatus: row.c[7] ? row.c[7].v : "", // Column W - Is Order Received? Status
+          acceptanceVia: row.c[8] ? row.c[8].v : "", // Column X - Acceptance Via
+          paymentMode: row.c[9] ? row.c[9].v : "", // Column Y - Payment Mode
+          paymentTerms: row.c[10] ? row.c[10].v : "", // Column Z - Payment Terms
+          transportMode: row.c[11] ? row.c[11].v : "", // Column AA - Transport Mode
+          // registrationFrom: row.c[27] ? row.c[27].v : "", // Column AB - Registration From
+          orderVideo: row.c[12] ? row.c[12].v : "", // Column AC - Order Video
+          acceptanceFile: row.c[13] ? row.c[13].v : "", // Column AD - Acceptance File
+          orderRemark: row.c[14] ? row.c[14].v : "", // Column AE - Remark
+          // apologyVideo: row.c[31] ? row.c[31].v : "", // Column AF - Apology Video
+          reasonStatus: row.c[15] ? row.c[15].v : "", // Column AG - Reason Status
+          reasonRemark: row.c[16] ? row.c[16].v : "", // Column AH - Reason Remark
+          holdReason: row.c[17] ? row.c[17].v : "", // Column AI - Hold Reason
+          holdingDate: formatDateToDDMMYYYY(row.c[18] ? row.c[18].v : ""), // Column AJ - Holding Date
+          holdRemark: row.c[19] ? row.c[19].v : "", // Column AK - Hold Remark
           priority: determinePriority(row.c[2] ? row.c[2].v : ""), // Determine priority based on status
           // callingDate: formatDateToDDMMYYYY(row.c[41] ? row.c[41].v : ""), // Column AP - Calling Date
-          callingDate: row.c[41] ? String(row.c[41].v).toLowerCase() : "", // Column AP - Calling Date 
+          callingDate: row.c[24] ? String(row.c[24].v).toLowerCase() : "", // Column AP - Calling Date
+          followupStatus: row.c[21] ? row.c[21].v : "", // Column 21 - Followup Status
+  creditDays: row.c[22] ? row.c[22].v : "",     // Column 22 - Credit Days
+  creditLimit: row.c[23] ? row.c[23].v : "",    // Column 23 - Credit Limit 
           assignedTo: assignedUser, // Add assigned user to the history item
         }
 
@@ -465,9 +476,9 @@ if (historyData && historyData.table && historyData.table.rows) {
           // Skip the header row (index 0)
           directEnquiryData.table.rows.slice(1).forEach((row, index) => {
             // Only show rows where column AH (index 37) is not null and column AI (index 38) is null
-            if (row.c && row.c[37] && row.c[37].v && (!row.c[38] || !row.c[38].v)) {
+            if (row.c && row.c[33] && row.c[33].v && (!row.c[34] || !row.c[34].v)) {
               // Get the assigned user from column BX (index 75)
-              const assignedUser = row.c[75] ? row.c[75].v : ""
+              const assignedUser = row.c[56] ? row.c[56].v : ""
 
               // For admin users, include all rows; for regular users, filter by their username
               const shouldInclude = isAdmin() || (currentUser && assignedUser === currentUser.username)
@@ -487,9 +498,9 @@ if (historyData && historyData.table && historyData.table.rows) {
                   stage: "Pending", // Default stage
                   dueDate: "", // You might want to add logic to calculate due date
                   assignedTo: assignedUser, // Add assigned user to the tracker item
-                  currentStage: row.c[42] ? row.c[42].v : "", // Column AQ - Current Stage
+                  currentStage: row.c[38] ? row.c[38].v : "", // Column AQ - Current Stage
                   // callingDate: row.c[76] ? formatDateToDDMMYYYY(row.c[76].v) : "", // Column BY - Calling Date
-                  callingDate: row.c[76] ? String(row.c[76].v).toLowerCase() : "", // Column BY - Calling Date as text
+                  callingDate: row.c[42] ? String(row.c[42].v).toLowerCase() : "", // Column BY - Calling Date as text
                 }
 
                 directEnquiryPendingData.push(directEnquiryItem)
@@ -674,34 +685,35 @@ if (historyData && historyData.table && historyData.table.rows) {
   }
 
   // Add this function inside your CallTracker component
-  const calculateFilterCounts = () => {
-    const counts = {
-      today: 0,
-      overdue: 0,
-      upcoming: 0,
-      older: 0
-    };
-  
-    // Calculate counts based on active tab
-    if (activeTab === "pending" || activeTab === "directEnquiry") {
-      const trackers = activeTab === "pending" ? pendingCallTrackers : directEnquiryPendingTrackers;
-      
-      trackers.forEach(tracker => {
-        const dateStr = tracker.callingDate ? tracker.callingDate.toLowerCase() : "";
-        if (dateStr.includes("today")) counts.today++;
-        else if (dateStr.includes("overdue")) counts.overdue++;
-        else if (dateStr.includes("upcoming")) counts.upcoming++;
-      });
-    } else if (activeTab === "history") {
-      historyCallTrackers.forEach(tracker => {
-        const dateStr = tracker.callingDate;
-        if (isToday(dateStr)) counts.today++;
-        else counts.older++;
-      });
-    }
-  
-    return counts;
+// Update the calculateFilterCounts function
+const calculateFilterCounts = () => {
+  const counts = {
+    today: 0,
+    overdue: 0,
+    upcoming: 0,
+    older: 0
   };
+
+  // Calculate counts based on active tab
+  if (activeTab === "pending" || activeTab === "directEnquiry") {
+    const trackers = activeTab === "pending" ? pendingCallTrackers : directEnquiryPendingTrackers;
+    
+    trackers.forEach(tracker => {
+      const dateStr = tracker.callingDate ? tracker.callingDate.toLowerCase() : "";
+      if (dateStr.includes("today")) counts.today++;
+      else if (dateStr.includes("overdue")) counts.overdue++;
+      else if (dateStr.includes("upcoming")) counts.upcoming++;
+    });
+  } else if (activeTab === "history") {
+    historyCallTrackers.forEach(tracker => {
+      const dateStr = tracker.callingDate ? tracker.callingDate.toLowerCase() : "";
+      if (dateStr.includes("todaycall")) counts.today++;
+      else if (dateStr.includes("older  days call")) counts.older++;
+    });
+  }
+
+  return counts;
+};
 
 const filterCounts = calculateFilterCounts();
 
@@ -1038,12 +1050,12 @@ const filterCounts = calculateFilterCounts();
             </button>
           )}
 
-          <button
+          {/* <button
             className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
             onClick={() => setShowNewCallTrackerForm(true)}
           >
             <PlusIcon className="inline-block mr-2 h-4 w-4" /> Direct Enquiry
-          </button>
+          </button> */}
         </div>
       </div>
 
@@ -1054,7 +1066,7 @@ const filterCounts = calculateFilterCounts();
         <div className="p-6">
           <div className="mb-4">
             <div className="inline-flex rounded-md shadow-sm">
-              <button
+              {/* <button
                 onClick={() => setActiveTab("pending")}
                 className={`px-4 py-2 text-sm font-medium ${
                   activeTab === "pending"
@@ -1063,7 +1075,7 @@ const filterCounts = calculateFilterCounts();
                 }`}
               >
                 Pending
-              </button>
+              </button> */}
               <button
                 onClick={() => setActiveTab("directEnquiry")}
                 className={`px-4 py-2 text-sm font-medium ${
@@ -1072,7 +1084,7 @@ const filterCounts = calculateFilterCounts();
                     : "bg-white text-slate-700 hover:bg-slate-50"
                 }`}
               >
-                Direct Enquiry Pending
+                Pending Enquiry
               </button>
               <button
                 onClick={() => setActiveTab("history")}
@@ -1292,7 +1304,7 @@ const filterCounts = calculateFilterCounts();
                                     Process <ArrowRightIcon className="ml-1 h-3 w-3 inline" />
                                   </button>
                                 </Link>
-                                <button
+                                {/* <button
                                   onClick={() => {
                                     setSelectedTracker(tracker)
                                     setShowPopup(true)
@@ -1300,7 +1312,7 @@ const filterCounts = calculateFilterCounts();
                                   className="px-3 py-1 text-xs border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-md"
                                 >
                                   View
-                                </button>
+                                </button> */}
                               </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -1461,6 +1473,15 @@ const filterCounts = calculateFilterCounts();
           {visibleColumns.holdRemark && (
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hold Remark</th>
           )}
+          {visibleColumns.followupStatus && (
+  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Followup Status</th>
+)}
+{visibleColumns.creditDays && (
+  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Credit Days</th>
+)}
+{visibleColumns.creditLimit && (
+  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Credit Limit</th>
+)}
         </tr>
       </thead>
       <tbody className="bg-white divide-y divide-gray-200">
@@ -1618,6 +1639,15 @@ const filterCounts = calculateFilterCounts();
               {visibleColumns.holdRemark && (
                 <td className="px-6 py-4 text-sm text-gray-500 max-w-[200px] truncate" title={tracker.holdRemark}>{tracker.holdRemark}</td>
               )}
+              {visibleColumns.followupStatus && (
+  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{tracker.followupStatus}</td>
+)}
+{visibleColumns.creditDays && (
+  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{tracker.creditDays}</td>
+)}
+{visibleColumns.creditLimit && (
+  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{tracker.creditLimit}</td>
+)}
             </tr>
           ))
         ) : (
