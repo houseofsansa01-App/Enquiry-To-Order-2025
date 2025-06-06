@@ -127,7 +127,7 @@ function MetricCard({ title, value, change, trend, icon, color }) {
           </div>
           <div className={`p-2 rounded-full bg-gradient-to-r ${color} text-white`}>{icon}</div>
         </div>
-        <div className="flex items-center mt-4">
+        {/* <div className="flex items-center mt-4">
           {trend === "up" ? (
             <TrendingUpIcon className="h-4 w-4 text-emerald-500 mr-1" />
           ) : (
@@ -136,7 +136,7 @@ function MetricCard({ title, value, change, trend, icon, color }) {
           <span className={trend === "up" ? "text-emerald-500 text-sm" : "text-rose-500 text-sm"}>
             {change} from last month
           </span>
-        </div>
+        </div> */}
       </div>
     </div>
   )
