@@ -55,8 +55,8 @@ function DashboardMetrics() {
             
             // Count pending enquiries where column AH (index 37) is not null and column AI (index 38) is null
             return row.c && 
-                   row.c[33] && row.c[33].v && 
-                   (!row.c[34] || !row.c[34].v) &&
+                   row.c[11] && row.c[11].v && 
+                   (!row.c[12] || !row.c[12].v) &&
                    shouldInclude
           }).length
         }

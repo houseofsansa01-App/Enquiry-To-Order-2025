@@ -123,7 +123,7 @@ function DashboardCharts() {
                   monthlyData[month].enquiries++
                   
                   // Check if this is an order (both AH and AI are not null)
-                  if (row.c[33] && row.c[33].v && row.c[34] && row.c[34].v) {
+                  if (row.c[11] && row.c[11].v && row.c[12] && row.c[12].v) {
                     monthlyData[month].orders++
                   }
                 }
@@ -150,7 +150,7 @@ function DashboardCharts() {
         // Process data for the Conversion Funnel (filtering by user)
         if (enquiryData && enquiryData.table && enquiryData.table.rows) {
           // Count total enquiries from Enquiry to Order sheet (filtered by user)
-          const totalEnquiries = enquiryData.table.rows.filter((row) => {
+          const totalEnquiries = enquiryData.table.rows.slice(1).filter((row) => {
             // Get the assigned user from column AQ (index 42)
             const assignedUser = row.c && row.c[56] ? row.c[56].v : ""
 
@@ -180,7 +180,7 @@ function DashboardCharts() {
             // Check if this row should be included based on user permissions
             const shouldInclude = isAdmin() || (currentUser && assignedUser === currentUser.username)
 
-            return row.c && row.c[33] && row.c[33].v && row.c[34] && row.c[34].v && shouldInclude
+            return row.c && row.c[11] && row.c[11].v && row.c[12] && row.c[12].v && shouldInclude
           }).length
 
           // Create conversion data
@@ -219,7 +219,7 @@ function DashboardCharts() {
             "#14b8a6", // teal
           ]
 
-          enquiryData.table.rows.forEach((row) => {
+          enquiryData.table.rows.slice(1).forEach((row) => {
             if (row.c && row.c[2] && row.c[2].v) {
               // Get the assigned user from column AQ (index 42)
               const assignedUser = row.c[56] ? row.c[56].v : ""

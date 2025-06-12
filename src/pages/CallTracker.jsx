@@ -476,7 +476,7 @@ if (historyData && historyData.table && historyData.table.rows) {
           // Skip the header row (index 0)
           directEnquiryData.table.rows.slice(1).forEach((row, index) => {
             // Only show rows where column AH (index 37) is not null and column AI (index 38) is null
-            if (row.c && row.c[33] && row.c[33].v && (!row.c[34] || !row.c[34].v)) {
+            if (row.c && row.c[11] && row.c[11].v && (!row.c[12] || !row.c[12].v)) {
               // Get the assigned user from column BX (index 75)
               const assignedUser = row.c[56] ? row.c[56].v : ""
 

@@ -14,7 +14,7 @@ function OrderStatusForm({ formData, onFieldChange, enquiryNo }) {
   const [quotationNumbers, setQuotationNumbers] = useState([])
   const [isLoadingQuotations, setIsLoadingQuotations] = useState(false)
   const [creditDaysOptions, setCreditDaysOptions] = useState([])
-const [creditLimitOptions, setCreditLimitOptions] = useState([])
+  const [creditLimitOptions, setCreditLimitOptions] = useState([])
 
   // Fetch dropdown options from DROPDOWN sheet
   useEffect(() => {
@@ -51,12 +51,11 @@ const [creditLimitOptions, setCreditLimitOptions] = useState([])
           const transportOptions = []
 
           const creditDaysOptions = []
-// For Credit Limit options (column CE = index 82)
-const creditLimitOptions = []
+          // For Credit Limit options (column CE = index 82)
+          const creditLimitOptions = []
 
-// 3. In the forEach loop inside fetchDropdownOptions, add these extractions:
-// Extract column CD values (index 81)
-
+          // 3. In the forEach loop inside fetchDropdownOptions, add these extractions:
+          // Extract column CD values (index 81)
           
           // Skip the header row (index 0)
           data.table.rows.slice(0).forEach(row => {
@@ -113,7 +112,7 @@ const creditLimitOptions = []
           setConveyedOptions(conveyedOptions)
           setTransportModeOptions(transportOptions)
           setCreditDaysOptions(creditDaysOptions)
-setCreditLimitOptions(creditLimitOptions)
+          setCreditLimitOptions(creditLimitOptions)
 
         }
       } catch (error) {
@@ -127,7 +126,7 @@ setCreditLimitOptions(creditLimitOptions)
         setConveyedOptions(["Yes", "No"])
         setTransportModeOptions(["Road", "Air", "Sea", "Rail"])
         setCreditDaysOptions(["30", "45", "60", "90"])
-setCreditLimitOptions(["10000", "25000", "50000", "100000"])
+        setCreditLimitOptions(["10000", "25000", "50000", "100000"])
 
       } finally {
         setIsLoadingDropdowns(false)
@@ -136,59 +135,6 @@ setCreditLimitOptions(["10000", "25000", "50000", "100000"])
     
     fetchDropdownOptions()
   }, [])
-
-  // Fetch quotation numbers for the given enquiry number
-  // useEffect(() => {
-  //   const fetchQuotationNumbers = async () => {
-  //     if (!enquiryNo) return
-      
-  //     try {
-  //       setIsLoadingQuotations(true)
-        
-  //       // Fetch data from FMS sheet
-  //       const fmsUrl = "https://docs.google.com/spreadsheets/d/1TZVWkmASF7tG-QER17588sl4SvRgY7knFKFDtYFjB0Q/gviz/tq?tqx=out:json&sheet=FMS"
-  //       const response = await fetch(fmsUrl)
-  //       const text = await response.text()
-        
-  //       // Extract the JSON part from the response
-  //       const jsonStart = text.indexOf('{')
-  //       const jsonEnd = text.lastIndexOf('}') + 1
-  //       const jsonData = text.substring(jsonStart, jsonEnd)
-        
-  //       const data = JSON.parse(jsonData)
-        
-  //       // Find matching quotation numbers where column B matches the enquiry number
-  //       if (data && data.table && data.table.rows) {
-  //         const matchingQuotations = []
-          
-  //         data.table.rows.forEach(row => {
-  //           // Column B is index 1 (enquiry number) and column H is index 7 (quotation number)
-  //           if (row.c && 
-  //               row.c[1] && 
-  //               row.c[1].v && 
-  //               row.c[1].v.toString() === enquiryNo.toString() &&
-  //               row.c[60] && 
-  //               row.c[60].v) {
-  //             matchingQuotations.push(row.c[60].v)
-  //           }
-  //         })
-          
-  //         setQuotationNumbers(matchingQuotations)
-          
-  //         // If we found matches and the form field is empty, auto-fill with the first match
-  //         if (matchingQuotations.length > 0 && !formData.orderStatusQuotationNumber) {
-  //           onFieldChange('orderStatusQuotationNumber', matchingQuotations[0])
-  //         }
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching quotation numbers:", error)
-  //     } finally {
-  //       setIsLoadingQuotations(false)
-  //     }
-  //   }
-    
-  //   fetchQuotationNumbers()
-  // }, [enquiryNo, formData.orderStatusQuotationNumber, onFieldChange])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -219,49 +165,6 @@ setCreditLimitOptions(["10000", "25000", "50000", "100000"])
     <div className="space-y-6 border p-4 rounded-md">
       <h3 className="text-lg font-medium">Order Status</h3>
       <hr className="border-gray-200" />
-
-      {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <label htmlFor="orderStatusQuotationNumber" className="block text-sm font-medium text-gray-700">
-            Quotation Number
-          </label>
-          {isLoadingQuotations ? (
-            <div className="flex items-center space-x-2">
-              <input
-                id="orderStatusQuotationNumber"
-                name="orderStatusQuotationNumber"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-                placeholder="Loading quotation numbers..."
-                value={formData.orderStatusQuotationNumber || ""}
-                onChange={handleChange}
-                disabled
-                required
-              />
-              <div className="text-sm text-gray-500">Loading...</div>
-            </div>
-          ) : (
-            <input
-              id="orderStatusQuotationNumber"
-              name="orderStatusQuotationNumber"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Enter quotation number"
-              value={formData.orderStatusQuotationNumber || ""}
-              onChange={handleChange}
-              required
-            />
-          )}
-          {enquiryNo && quotationNumbers.length > 0 && !isLoadingQuotations && (
-            <div className="text-xs text-green-600 mt-1">
-              {quotationNumbers.length === 1 
-                ? "Found matching quotation" 
-                : `Found ${quotationNumbers.length} matching quotations`}
-            </div>
-          )}
-          {enquiryNo && quotationNumbers.length === 0 && !isLoadingQuotations && (
-            <div className="text-xs text-orange-500 mt-1">No matching quotations found for enquiry #{enquiryNo}</div>
-          )}
-        </div>
-      </div> */}
 
       <div className="space-y-2">
         <label className="block text-sm font-medium text-gray-700">Is Order Received? Status</label>
@@ -311,182 +214,67 @@ setCreditLimitOptions(["10000", "25000", "50000", "100000"])
         </div>
       </div>
 
+      {/* "Yes" - Show external form link with better integration */}
       {orderStatus === "yes" && (
-        <div className="space-y-4 border p-4 rounded-md">
-          <h4 className="font-medium">Order Received Details</h4>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label htmlFor="acceptanceVia" className="block text-sm font-medium text-gray-700">
-                Acceptance Via
-              </label>
-              <select
-                id="acceptanceVia"
-                name="acceptanceVia"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-                value={formData.acceptanceVia || ""}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Select method</option>
-                {acceptanceViaOptions.map((option, index) => (
-                  <option key={index} value={option.toLowerCase()}>{option}</option>
-                ))}
-              </select>
+        <div className="space-y-4 border-2 border-green-300 bg-green-50 p-4 rounded-md">
+          <h4 className="font-medium text-green-800">Order Receipt Form</h4>
+          
+          <div className="bg-white border border-green-200 rounded-lg p-6">
+            <div className="text-center">
+              <div className="mb-4">
+                <svg className="w-16 h-16 text-green-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                <h5 className="text-lg font-semibold text-green-800">Complete Order Details</h5>
+                <p className="text-green-700 text-sm mt-1">Fill out the comprehensive order receipt form</p>
+              </div>
+              
+              <div className="bg-green-50 border border-green-200 rounded p-4 mb-4">
+                <p className="text-sm text-green-700 font-medium mb-2">This form includes:</p>
+                <div className="grid grid-cols-2 gap-2 text-xs text-green-600">
+                  <div>• Order Type & Date</div>
+                  <div>• Customer Information</div>
+                  <div>• Delivery Details</div>
+                  <div>• Product Information</div>
+                  <div>• Payment Status</div>
+                  <div>• Quantity & Weight</div>
+                </div>
+              </div>
+              
+              <div className="space-y-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const formUrl = "https://script.google.com/a/macros/houseofsansa.com/s/AKfycbwsUvFVPlOZF1Fw3zWtwUoghJCMRKiSBlPx5isT5oDx22Y7BMOmIFEmkRkNXi9ujkQJ2w/exec"
+                    window.location.href = formUrl
+                  }}
+                  className="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-md font-medium transition-colors flex items-center justify-center space-x-2"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                  </svg>
+                  <span>Go to Order Receipt Form</span>
+                </button>
+                
+                <button
+                  type="button"
+                  onClick={() => {
+                    const formUrl = "https://script.google.com/a/macros/houseofsansa.com/s/AKfycbwsUvFVPlOZF1Fw3zWtwUoghJCMRKiSBlPx5isT5oDx22Y7BMOmIFEmkRkNXi9ujkQJ2w/exec"
+                    window.open(formUrl, '_blank', 'width=1000,height=800,scrollbars=yes,resizable=yes')
+                  }}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md font-medium transition-colors flex items-center justify-center space-x-2"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                  </svg>
+                  <span>Open in New Window</span>
+                </button>
+              </div>
+              
+              <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded text-xs text-yellow-800">
+                <strong>💡 Tip:</strong> Use "Go to Form" to navigate directly, or "New Window" to keep this tracker open while filling the form.
+              </div>
             </div>
-
-            <div className="space-y-2">
-              <label htmlFor="paymentMode" className="block text-sm font-medium text-gray-700">
-                Payment Mode
-              </label>
-              <select
-                id="paymentMode"
-                name="paymentMode"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-                value={formData.paymentMode || ""}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Select mode</option>
-                {paymentModeOptions.map((option, index) => (
-                  <option key={index} value={option.toLowerCase()}>{option}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="paymentTerms" className="block text-sm font-medium text-gray-700">
-                Payment Terms
-              </label>
-              <select
-                id="paymentTerms"
-                name="paymentTerms"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-                value={formData.paymentTerms || ""}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Select payment terms</option>
-                {paymentTermsOptions.map((option, index) => (
-                  <option key={index} value={option}>{option} days</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="space-y-2">
-  <label htmlFor="transportMode" className="block text-sm font-medium text-gray-700">
-    Transport Mode
-  </label>
-  <select
-  id="transportMode"
-  name="transportMode"
-    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-    value={formData.transportMode || ""}
-    onChange={handleChange}
-  >
-    <option value="">Select transport mode</option>
-    {transportModeOptions.map((option, index) => (
-      <option key={index} value={option.toLowerCase()}>{option}</option>
-    ))}
-  </select>
-</div>
-
-<div className="space-y-2">
-  <label htmlFor="creditDays" className="block text-sm font-medium text-gray-700">
-    Credit Days
-  </label>
-  <select
-    id="creditDays"
-    name="creditDays"
-    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-    value={formData.creditDays || ""}
-    onChange={handleChange}
-  >
-    <option value="">Select credit days</option>
-    {creditDaysOptions.map((option, index) => (
-      <option key={index} value={option}>{option}</option>
-    ))}
-  </select>
-</div>
-
-<div className="space-y-2">
-  <label htmlFor="creditLimit" className="block text-sm font-medium text-gray-700">
-    Credit Limit
-  </label>
-  <select
-    id="creditLimit"
-    name="creditLimit"
-    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-    value={formData.creditLimit || ""}
-    onChange={handleChange}
-  >
-    <option value="">Select credit limit</option>
-    {creditLimitOptions.map((option, index) => (
-      <option key={index} value={option}>{option}</option>
-    ))}
-  </select>
-</div>
-
-            {/* <div className="space-y-2">
-              <label htmlFor="conveyedForRegistration" className="block text-sm font-medium text-gray-700">
-                CONVEYED FOR REGISTRATION FORM
-              </label>
-              <select
-                id="conveyedForRegistration"
-                name="conveyedForRegistration"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-                value={formData.conveyedForRegistration || ""}
-                onChange={handleChange}
-              >
-                <option value="">Select option</option>
-                {conveyedOptions.map((option, index) => (
-                  <option key={index} value={option.toLowerCase()}>{option}</option>
-                ))}
-              </select>
-            </div> */}
-          </div>
-
-          <div className="space-y-2">
-  <label htmlFor="orderVideo" className="block text-sm font-medium text-gray-700">
-    Order Video
-  </label>
-  <select
-    id="orderVideo"
-    name="orderVideo"
-    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-    onChange={handleChange}
-  >
-    <option value="">Select an option</option>
-    <option value="yes">Yes</option>
-    <option value="no">No</option>
-  </select>
-</div>
-
-          <div className="space-y-2">
-            <label htmlFor="acceptanceFile" className="block text-sm font-medium text-gray-700">
-              Acceptance File Upload
-            </label>
-            <input
-              id="acceptanceFile"
-              name="acceptanceFile"
-              type="file"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-              onChange={handleFileChange}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="orderRemark" className="block text-sm font-medium text-gray-700">
-              REMARK
-            </label>
-            <textarea
-              id="orderRemark"
-              name="orderRemark"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Enter remarks"
-              value={formData.orderRemark || ""}
-              onChange={handleChange}
-            />
           </div>
         </div>
       )}
@@ -494,50 +282,20 @@ setCreditLimitOptions(["10000", "25000", "50000", "100000"])
       {orderStatus === "no" && (
         <div className="space-y-4 border p-4 rounded-md">
           <h4 className="font-medium">Order Lost Details</h4>
-{/* 
+
           <div className="space-y-2">
-            <label htmlFor="apologyVideo" className="block text-sm font-medium text-gray-700">
-              Order Lost Apology Video
+            <label htmlFor="reasonForNo" className="block text-sm font-medium text-gray-700">
+              Reason for No
             </label>
             <input
-              id="apologyVideo"
-              name="apologyVideo"
-              type="file"
+              id="reasonForNo"
+              name="reasonForNo"
+              type="text"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-              onChange={handleFileChange}
-            />
-          </div> */}
-
-          <div className="space-y-2">
-            <label htmlFor="reasonStatus" className="block text-sm font-medium text-gray-700">
-              If No then get relevant reason Status
-            </label>
-            <select
-              id="reasonStatus"
-              name="reasonStatus"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-              value={formData.reasonStatus || ""}
+              placeholder="Enter reason why order was not received"
+              value={formData.reasonForNo || ""}
               onChange={handleChange}
               required
-            >
-              <option value="">Select reason</option>
-              {reasonStatusOptions.map((option, index) => (
-                <option key={index} value={option.toLowerCase()}>{option}</option>
-              ))}
-            </select>
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="reasonRemark" className="block text-sm font-medium text-gray-700">
-              If No then get relevant reason Remark
-            </label>
-            <textarea
-              id="reasonRemark"
-              name="reasonRemark"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Enter reason remarks"
-              value={formData.reasonRemark || ""}
-              onChange={handleChange}
             />
           </div>
         </div>
@@ -548,27 +306,8 @@ setCreditLimitOptions(["10000", "25000", "50000", "100000"])
           <h4 className="font-medium">Order Hold Details</h4>
 
           <div className="space-y-2">
-            <label htmlFor="holdReason" className="block text-sm font-medium text-gray-700">
-              CUSTOMER ORDER HOLD REASON CATEGORY
-            </label>
-            <select
-              id="holdReason"
-              name="holdReason"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-              value={formData.holdReason || ""}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Select reason</option>
-              {holdReasonOptions.map((option, index) => (
-                <option key={index} value={option.toLowerCase()}>{option}</option>
-              ))}
-            </select>
-          </div>
-
-          <div className="space-y-2">
             <label htmlFor="holdingDate" className="block text-sm font-medium text-gray-700">
-              HOLDING DATE
+              Holding Date
             </label>
             <input
               id="holdingDate"
@@ -583,7 +322,7 @@ setCreditLimitOptions(["10000", "25000", "50000", "100000"])
 
           <div className="space-y-2">
             <label htmlFor="holdRemark" className="block text-sm font-medium text-gray-700">
-              HOLD REMARK
+              Hold Remarks
             </label>
             <textarea
               id="holdRemark"
@@ -592,6 +331,7 @@ setCreditLimitOptions(["10000", "25000", "50000", "100000"])
               placeholder="Enter hold remarks"
               value={formData.holdRemark || ""}
               onChange={handleChange}
+              rows="3"
             />
           </div>
         </div>
