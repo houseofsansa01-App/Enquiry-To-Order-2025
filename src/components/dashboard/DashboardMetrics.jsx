@@ -34,7 +34,7 @@ function DashboardMetrics() {
         // Count from Enquiry to Order sheet with user filtering
         if (enquiryData && enquiryData.table && enquiryData.table.rows) {
           // Count total enquiries with user filtering (count column B total no. of rows with data)
-          totalEnquiry = enquiryData.table.rows.slice(1).filter(row => {
+          totalEnquiry = enquiryData.table.rows.slice(2).filter(row => {
             // Get the assigned user from column AQ (index 42)
             const assignedUser = row.c && row.c[56] ? row.c[56].v : ""
             
