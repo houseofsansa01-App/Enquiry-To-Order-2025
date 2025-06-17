@@ -531,6 +531,7 @@ const fetchLatestQuotationNumber = async (enquiryNo) => {
                 enquiryNo={formData.enquiryNo}
                 formData={orderStatusData}
                 onFieldChange={handleOrderStatusChange}
+                parentFormData={formData}
               />
             )}
           </div>

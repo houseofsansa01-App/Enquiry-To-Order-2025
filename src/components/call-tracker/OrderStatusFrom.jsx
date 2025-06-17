@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-function OrderStatusForm({ formData, onFieldChange, enquiryNo }) {
+function OrderStatusForm({ formData, onFieldChange, enquiryNo, parentFormData }) {
   const [orderStatus, setOrderStatus] = useState(formData.orderStatus || "")
   const [acceptanceViaOptions, setAcceptanceViaOptions] = useState([])
   const [paymentModeOptions, setPaymentModeOptions] = useState([])
@@ -178,17 +178,16 @@ function OrderStatusForm({ formData, onFieldChange, enquiryNo }) {
       const currentDate = new Date()
       const formattedDate = formatDate(currentDate)
       
-      // Get form data from parent component - we need to access the parent form data
-      // Since we don't have direct access to parent form data, we'll use what's available
+      // Get form data from parent component
       const rowData = [
-        formattedDate,           // Column A - Timestamp
-        enquiryNo || "",         // Column B - Enquiry No.
-        "",                      // Column C - Enquiry Status (will be filled by parent)
-        "",                      // Column D - What Did Customer Say (will be filled by parent)
-        "order-status",          // Column E - Current Stage
-        "",                      // Column F - empty
-        "",                      // Column G - empty
-        "yes"                    // Column H - Is Order Received? Status
+        formattedDate,                        // Column A - Timestamp
+        enquiryNo || "",                      // Column B - Enquiry No.
+        parentFormData?.enquiryStatus || "",  // Column C - Enquiry Status
+        parentFormData?.customerFeedback || "", // Column D - What Did Customer Say
+        "order-status",                       // Column E - Current Stage
+        "",                                   // Column F - empty
+        "",                                   // Column G - empty
+        "yes"                                 // Column H - Is Order Received? Status
       ]
       
       // Script URL for Google Apps Script
