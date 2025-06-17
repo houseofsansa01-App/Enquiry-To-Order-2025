@@ -150,7 +150,7 @@ function DashboardCharts() {
         // Process data for the Conversion Funnel (filtering by user)
         if (enquiryData && enquiryData.table && enquiryData.table.rows) {
           // Count total enquiries from Enquiry to Order sheet (filtered by user)
-          const totalEnquiries = enquiryData.table.rows.slice(1).filter((row) => {
+          const totalEnquiries = enquiryData.table.rows.slice(2).filter((row) => {
             // Get the assigned user from column AQ (index 42)
             const assignedUser = row.c && row.c[56] ? row.c[56].v : ""
 
